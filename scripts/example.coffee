@@ -10,24 +10,33 @@
 
 module.exports = (robot) ->
 
-  # robot.hear /badger/i, (res) ->
-  #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
-  #
-  # robot.respond /open the (.*) doors/i, (res) ->
-  #   doorType = res.match[1]
-  #   if doorType is "pod bay"
-  #     res.reply "I'm afraid I can't let you do that."
-  #   else
-  #     res.reply "Opening #{doorType} doors"
-  #
-  # robot.hear /I like pie/i, (res) ->
-  #   res.emote "makes a freshly baked pie"
-  #
-  # lulz = ['lol', 'rofl', 'lmao']
-  #
-  # robot.respond /lulz/i, (res) ->
-  #   res.send res.random lulz
-  #
+  robot.hear /badger/i, (res) ->
+    res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
+
+  robot.respond /open the (.*) doors/i, (res) ->
+    doorType = res.match[1]
+    if doorType is "pod bay"
+      res.reply "I'm afraid I can't let you do that."
+    else
+      res.reply "Opening #{doorType} doors"
+
+  robot.hear /I like pie/i, (res) ->
+    res.emote "makes a freshly baked pie"
+
+  lulz = ['lol', 'rofl', 'lmao']
+
+  robot.respond /lulz/i, (res) ->
+    res.send res.random lulz
+
+  robot.hear /shell_(.*)/, (msg) ->
+    name = msg.match[1]
+    @exec = require('child_process').exec
+    command = "/work/hack/#{name}.sh"
+    msg.send "Command: #{command}"
+    @exec command, (error, stdout, stderr) ->
+      msg.send error if error?
+      msg.send stdout if stdout?
+      msg.send stderr if stderr?
   # robot.topic (res) ->
   #   res.send "#{res.message.text}? That's a Paddlin'"
   #
